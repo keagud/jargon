@@ -9,6 +9,7 @@ edition = "2021"
 colored = "2.0.0"
 fuzzy-matcher = "0.3.7"
 minus = "5.1.0"
+rand = "0.8.5"
 textwrap = "0.16.0"
 
 [build-dependencies]

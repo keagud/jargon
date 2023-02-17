@@ -42,13 +42,17 @@ fn write_to_file<P: AsRef<Path>>(
     let entries_count = entries.len();
     let mut file_handle = File::create(&target_path)?;
 
-    writeln!(&mut file_handle, "//Macros? You mean format strings?")?;
+    writeln!(&mut file_handle, "//Macros? You mean format strings?\n")?;
 
-    //const TD: [[&str; 3]; 2] = [["foo", "", "bar"], ["baz", "", "boz"]];
     writeln!(
         &mut file_handle,
-        "pub const ENTRIES: [[&str; 3]; {}] = [",
+        "pub const NUM_ENTRIES:usize = {};",
         entries_count
+    )?;
+
+    writeln!(
+        &mut file_handle,
+        "pub const ENTRIES: [[&str; 3]; NUM_ENTRIES] = ["
     )?;
 
     for entry in entries {
