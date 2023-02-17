@@ -13,20 +13,14 @@ use textwrap;
 
 type Entry = [&'static str; 3];
 
-fn match_entry(query: &str, threshold: i64) -> Option<Entry> {
+fn match_entry(query: &str) -> Option<Entry> {
     let matcher = SkimMatcherV2::default();
+
+    let matcher = matcher.ignore_case();
 
     let entry_iter = IntoIterator::into_iter(jargon_entries);
 
-    let search_result = entry_iter.max_by_key(|e| matcher.fuzzy_match(query, e[0]))?;
-
-    let score = matcher.fuzzy_match(query, search_result[0])?;
-
-    if threshold == 0 || score < threshold {
-        Some(search_result)
-    } else {
-        None
-    }
+    entry_iter.max_by_key(|e| matcher.fuzzy_match(query, e[0]))
 }
 
 fn print_entry(e: Entry, opts: textwrap::Options) {
@@ -52,14 +46,12 @@ fn random_entry() -> Entry {
 }
 
 fn main() -> io::Result<()> {
-    const THRESHOLD: i64 = 0;
-
     let args: Vec<String> = env::args().collect();
 
     let query = if args.len() > 1 { Some(&args[1]) } else { None };
 
     let query_result = match query {
-        Some(q) => match_entry(q, THRESHOLD),
+        Some(q) => match_entry(q),
         None => Some(random_entry()),
     }
     .ok_or(io::ErrorKind::NotFound)?;
