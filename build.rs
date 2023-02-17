@@ -47,7 +47,7 @@ fn write_to_file<P: AsRef<Path>>(
     //const TD: [[&str; 3]; 2] = [["foo", "", "bar"], ["baz", "", "boz"]];
     writeln!(
         &mut file_handle,
-        "const ENTRIES: [[&str; 3]; {}] = [",
+        "pub const ENTRIES: [[&str; 3]; {}] = [",
         entries_count
     )?;
 
